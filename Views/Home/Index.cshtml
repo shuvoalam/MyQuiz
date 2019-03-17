@@ -1,0 +1,53 @@
+﻿@model MyQuiz.Models.Question
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h4>Kontroll Spørsmål</h4>
+
+<script type="text/javascript">
+
+    $("#submitButton").live("click", function () {
+        $.get($(this), function (response) {
+            $("#quiz").replaceWith($("#quiz", response));
+        });
+        return false;
+    });
+</script>
+
+<div ng-controller="QuizCtrl" class="row">
+    <div class="progress">
+        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{page}}" aria-valuemin="0" aria-valuemax="3" style="width: {{progress}}%">
+        </div>
+    </div>
+    </div>
+    <div id="quiz">
+
+        @using (Html.BeginForm("Index", "Home"))
+        {
+            <fieldset>
+
+                <h3>
+                    @Model.QuestionText
+                </h3>
+
+
+                @Html.HiddenFor(x => x.QuestionId)
+
+                <li>
+                    @foreach (var choice in Model.AnswerChoices)
+                    {
+                        <ul>
+                            @Html.RadioButton("answer", @choice.Choice) @choice.Choice
+                        </ul>
+                    }
+                </li>
+
+                <input type="submit" value="Next" id="submitButton" />
+
+            </fieldset>
+        }
+
+    </div>
+
